@@ -9,36 +9,66 @@ submissionList = []
 submissionDic = {}
 solutionDic = {}
 APList = []
-APSumList = []
-MAP = 0
-with open('submission.txt','r') as S:
-    for line in S.readlines():
-        submissions  = line
+APSum = 0
+MAP=0
+with open('solution.txt','r') as A:
+    line = A.readline() 
+    #棄置第一行
+    
+    for line in A.readlines():
+        temp = [] 
+        line = line.strip('\n')
+        temp = temp + line.split(',')
+        queryName = temp[0]
+        solutions = temp[1].split()
+        solutionDic[queryName] = solutions
         
-        
-"""
+""" test solutionDic
+    for q in solutionDic:
+        print(q,": ",solutionDic[q])
+"""  
 
+with open ('submission.txt','r') as S:
+    count = 0
+    for line in S.readlines():
+        temp = []
+        line = line.strip('\n')
+        temp = temp + line.split(',')
+        if(count!=0):            
+            queryName = temp[0]
+            submissions = temp[1].split()        
+            submissionDic[queryName] = submissions
+        else:
+            count = count+1
+""" test for submissionDic
+    for q in submissionDic:
+        print(q,": ",submissionDic[q])
+"""          
+
+
+"""
+開始計算MAP步驟
+1. need submissionDic , solutionDic ,即可
+"""
 for key in submissionDic:                 #特定query
-    APSum = 0                             #每個query要重新計算的
+    PSum = 0                             #每個query要重新計算的
     countAll = 0
     countR = 0
-    for d in submissionDic[key]:          #特定query下之特定doc
-        for dA in solutionDic[key]:       #特定query下之所有解答
+    PList = []
+    for d in submissionDic[key]:          #特定query下之特定doc排序
+        countAll = countAll+1             #每拿出一個文件分母+1
+        for dA in solutionDic[key]:       #特定query下之所有相關文件
             if dA==d :
-                countAll = countAll+1
                 countR = countR+1
-                APList.append(countR/countAll)
-            else:
-                countAll = countAll+1
-                
-    for AP in APList:
-        APSum = APSum + AP
+                PList.append(countR/countAll)
+                #print("got it ! : solution: " ,dA," sub: ",d)
+    for P in PList:                  #一個query一組APlist,一個APsum
+        PSum = PSum + P
     
-    APSumList.append(APSum)
-
-for AP in APSumList:
-    MAP = MAP+AP
+    APList.append(PSum/len(PList)) #把AP算出來
     
-MAP = MAP/len(solutionDic)
-
-"""
+for AP in APList:
+    APSum = APSum+AP
+ 
+MAP = APSum/len(solutionDic)
+print("MAP score is : ",MAP)
