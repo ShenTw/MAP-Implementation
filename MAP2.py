@@ -18,7 +18,8 @@ solutionDic = {}
 APList = []
 APSum = 0
 MAP=0
-with open('solution.txt','r') as A:
+path = 'C:/Users/shen/.spyder-py3/'
+with open(path+'solution.txt','r') as A:
     line = A.readline() 
     #棄置第一行
     
@@ -35,7 +36,7 @@ with open('solution.txt','r') as A:
         print(q,": ",solutionDic[q])
 """  
 
-with open ('submission.txt','r') as S:
+with open (path+'HW1_M10615103.txt','r') as S:
     line = S.readline()
     for line in S.readlines():
         temp = []
